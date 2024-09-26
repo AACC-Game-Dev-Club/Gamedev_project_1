@@ -4,34 +4,38 @@ using UnityEngine;
 
 public class PipeGenerator : MonoBehaviour
 {
-
-    [SerializeField] private Transform top;
-    [SerializeField] private Transform bottom;
-    private float elapsedTime = 0.0f;
     [SerializeField] private GameObject pipe;
-    public List<GameObject> pipes { get; private set; } = new();
-    private float maxTime = 2;
+    [SerializeField] private float heightRange = 2.0f;
+    [SerializeField] private float maxTime = 3.0f;
+    [SerializeField] private float lifeSpan = 3.0f;
+    private float timer;
 
    
-    void Start()
+    private void Start()
     {
+        SpawnPipe();
+    }
+
+    void Update()
+    {
+        //Spawn a pipe every X seconds
+        if (timer > maxTime)
+        {
+            SpawnPipe();
+            timer = 0;
+        }
+        timer += Time.deltaTime;
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private void SpawnPipe()
     {
-        elapsedTime += Time.deltaTime;
-
-        if (elapsedTime > maxTime)
-        {
-            GameObject topPipe = Instantiate(pipe, top.position, Quaternion.identity);
-            GameObject bottomPipe = Instantiate(pipe, bottom.position, Quaternion.identity);
-            pipes.Add(topPipe);
-            pipes.Add(bottomPipe);
-            elapsedTime = 0.0f;
-        }
-
+        //Randomize spawn position within a range and then create a pipe that will destroy itself automatically
+        //Once again, matching Vector sizes. Quaternion.identity -- no rotation.
+        Vector3 spawnPosition = (transform.position + new Vector3(0, Random.Range(-heightRange, heightRange)));
+        GameObject tempPipe = Instantiate(pipe, spawnPosition, Quaternion.identity);
         
+        //Must use tempPipe or Unity thinks you're trying to delete a prefab
+        Destroy(tempPipe, lifeSpan);
     }
 }

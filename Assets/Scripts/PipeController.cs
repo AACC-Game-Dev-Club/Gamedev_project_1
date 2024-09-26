@@ -4,22 +4,14 @@ using UnityEngine;
 
 public class PipeController : MonoBehaviour
 {
+        [SerializeField] private float speed = 7.0f;
 
-    [SerializeField] private float speed = 0.8f;
-    private PipeGenerator pipeGenerator;
-    // Start is called before the first frame update
-    void Awake()
+    private void Update()
     {
-        pipeGenerator = FindObjectOfType<PipeGenerator>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        foreach(GameObject pipe in pipeGenerator.pipes)
-        {
-            pipe.transform.Translate(Vector2.left * Time.deltaTime * speed);
-        }
-
+        /*
+        Move the pipe every frame with a speed modifier. Vector3.left is shorthand for a (-1, 0, 0) vector. 
+        This must be Vector3.left since transform.position is Vector3.
+        */
+        transform.position += Vector3.left * speed * Time.deltaTime;
     }
 }
