@@ -4,15 +4,27 @@ using UnityEngine;
 
 public class Pipe : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+   private float height;
+   private Vector2 direction;
 
-    // Update is called once per frame
-    void Update()
-    {
+   public void Init(float height, Vector2 direction){
+        this.height = height;
+        this.direction = direction;
+        InitVisuals();
+   }
+
+    private void InitVisuals(){
+        SetHeight();
+        SetPosition();
+    }
+    private void SetHeight(){
+       
+        transform.localScale = new Vector2(transform.localScale.x, height * direction.y);
+
+    }
+    private void SetPosition(){
+       
+        // transform.position = new Vector2(transform.position.x, (transform.position.y + height));
         
     }
 }
