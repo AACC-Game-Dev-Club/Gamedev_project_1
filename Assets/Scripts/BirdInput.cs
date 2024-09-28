@@ -6,7 +6,7 @@ public class BirdInput : MonoBehaviour
 {
     private Rigidbody2D rb2d;
     [SerializeField]private float jumpForce = 200;
-    // Start is called before the first frame update
+
     void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -17,9 +17,8 @@ public class BirdInput : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space)) {
             //increase velocity y
-            Vector2 vel = rb2d.velocity;
-            vel.y = jumpForce;
-            rb2d.velocity = vel;
+            rb2d.velocity = new Vector3(0, jumpForce);
+           
             
 
         }
