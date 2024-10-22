@@ -7,7 +7,7 @@ public class FlappyAnimation{
     public Sprite[] sprites;
 
 }
-public class BirdVisualController : MonoBehaviour
+public class PlayerVisualController : MonoBehaviour
 {
     
     [SerializeField]private FlappyAnimation flappyAnimation;
