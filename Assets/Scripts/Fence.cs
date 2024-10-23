@@ -4,27 +4,14 @@ using UnityEngine;
 
 public class Fence : MonoBehaviour
 {
-   private float height;
-   private Vector2 direction;
+   public float Height {get; private set;}
+   public Vector2 Direction {get; private set;}
 
    public void Init(float height, Vector2 direction){
-        this.height = height;
-        this.direction = direction;
-        InitVisuals();
+        Height = height;
+        Direction = direction;
    }
 
-    private void InitVisuals(){
-        SetHeight();
-        SetPosition();
-    }
-    private void SetHeight(){
-       
-        transform.localScale = new Vector2(transform.localScale.x, height * direction.y);
-
-    }
-    private void SetPosition(){
-       
-        // transform.position = new Vector2(transform.position.x, (transform.position.y + height));
-        
-    }
+   
+   
 }
