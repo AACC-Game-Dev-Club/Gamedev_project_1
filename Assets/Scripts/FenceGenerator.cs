@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class PipeGenerator : MonoBehaviour
+public class FenceGenerator : MonoBehaviour
 {
 
     
     private float elapsedTime = 0.0f;
-    [SerializeField] private Pipe pipe;
+    [SerializeField] private Fence pipe;
     
     /// <summary>
     /// The minimum vertical gap between the top and bottom pipes
@@ -20,7 +20,7 @@ public class PipeGenerator : MonoBehaviour
     [SerializeField]private float maxGap;
 
     
-    public List<Pipe> Pipes { get; private set; } = new();
+    public List<Fence> Pipes { get; private set; } = new();
     
     /// <summary>
     /// The maximum amount of time it will take for another pipe to spawn
@@ -112,7 +112,7 @@ public class PipeGenerator : MonoBehaviour
     private void SpawnPipe(float height, Vector2Int direction){
         
         Vector2 spawnPosition = DecideSpawnPosition(direction);   
-        Pipe pipe = Instantiate(this.pipe, spawnPosition, Quaternion.identity);
+        Fence pipe = Instantiate(this.pipe, spawnPosition, Quaternion.identity);
         pipe.Init(height, direction);
         Pipes.Add(pipe);
     }
