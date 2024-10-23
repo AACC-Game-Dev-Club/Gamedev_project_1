@@ -8,40 +8,40 @@ public class FenceGenerator : MonoBehaviour
 
     
     private float elapsedTime = 0.0f;
-    [SerializeField] private Fence pipe;
+    [SerializeField] private Fence fence;
     
     /// <summary>
-    /// The minimum vertical gap between the top and bottom pipes
+    /// The minimum vertical gap between the top and bottom fences
     /// </summary>
     [SerializeField]private float minGap;
     /// <summary>
-    /// The maximum vertical gap between the two pipes
+    /// The maximum vertical gap between the two fences
     /// </summary>
     [SerializeField]private float maxGap;
 
     
-    public List<Fence> Pipes { get; private set; } = new();
+    public List<Fence> Fences { get; private set; } = new();
     
     /// <summary>
-    /// The maximum amount of time it will take for another pipe to spawn
+    /// The maximum amount of time it will take for another fence to spawn
     /// </summary>
     [SerializeField]private float maxTime = 4;
 
     /// <summary>
-    /// The minimum amount of time it will take for another pipe to spawn
+    /// The minimum amount of time it will take for another fence to spawn
     /// </summary>
     [SerializeField]private float minTime = 2;
     
     /// <summary>
-    /// The minimum height of the pipe
+    /// The minimum height of the fence
     /// </summary>
     [SerializeField]private float minHeight;
     
    
     /// <summary>
-    /// Generates a pipe with randomized gap and time between each generation
+    /// Generates a fence with randomized gap and time between each generation
     /// </summary>
-    private void GeneratePipes(){
+    private void GenerateFences(){
         elapsedTime += Time.deltaTime;
 
         if (elapsedTime > maxTime)
@@ -54,15 +54,15 @@ public class FenceGenerator : MonoBehaviour
             //random gap size between the min and max gap values
             float gapY = Random.Range(minGap, maxGap);
 
-            //Calculate the remaining height for the top and bottom pipes
+            //Calculate the remaining height for the top and bottom fences
             float remainingHeight = cameraHeight - gapY;
 
-            //Generates random heights for the bottom and top pipes
+            //Generates random heights for the bottom and top fences
             float bottomHeight = Random.Range(minHeight, remainingHeight);
             float topHeight = remainingHeight - bottomHeight;
 
-            SpawnPipe(bottomHeight, Vector2Int.up);
-            SpawnPipe(topHeight, Vector2Int.down);
+            SpawnFence(bottomHeight, Vector2Int.up);
+            SpawnFence(topHeight, Vector2Int.down);
             elapsedTime = 0.0f;
         }
 
@@ -72,16 +72,16 @@ public class FenceGenerator : MonoBehaviour
 
     private void Update()
     {
-        GeneratePipes();
+        GenerateFences();
         
     }
 
    
     /// <summary>
-    /// Determines and returns the pipe spawn position based on its direction, up or down
+    /// Determines the fence's spawn position based on the direction it is pointing (up or down)
     /// </summary>
-    /// <param name="direction">The direction of the pipe. (up means the pipe is pointing up from the bottom 
-    /// and down means the pipe is pointing down from the top</param>
+    /// <param name="direction">The direction the fence is pointing towards. (up means the fence is pointing up from the bottom 
+    /// and down means the fence is pointing down from the top</param>
     /// <returns>The spawn position</returns>
     private Vector2 DecideSpawnPosition(Vector2Int direction)
     {
@@ -105,15 +105,15 @@ public class FenceGenerator : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawns a pipe with the given height and direction
+    /// Spawns a fence with the given height and direction
     /// </summary>
     /// <param name="height"></param>
     /// <param name="direction"></param>
-    private void SpawnPipe(float height, Vector2Int direction){
+    private void SpawnFence(float height, Vector2Int direction){
         
         Vector2 spawnPosition = DecideSpawnPosition(direction);   
-        Fence pipe = Instantiate(this.pipe, spawnPosition, Quaternion.identity);
-        pipe.Init(height, direction);
-        Pipes.Add(pipe);
+        Fence fence = Instantiate(this.fence, spawnPosition, Quaternion.identity);
+        fence.Init(height, direction);
+        Fences.Add(fence);
     }
 }
