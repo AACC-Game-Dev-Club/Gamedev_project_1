@@ -41,12 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Pipe
-    uniqueID: 4179321453
-    locked: 0
   - name: Ground
     uniqueID: 1518446959
     locked: 0
-  - name: Bird
+  - name: Fence
+    uniqueID: 4179321453
+    locked: 0
+  - name: Player
     uniqueID: 323473635
     locked: 0
