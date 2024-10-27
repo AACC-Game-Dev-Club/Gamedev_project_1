@@ -6,6 +6,8 @@ using Random = UnityEngine.Random;
 public class FenceGenerator : MonoBehaviour
 {
 
+     private FencePool pool; 
+
     
     private float elapsedTime = 0.0f;
     [SerializeField] private Fence fence;
@@ -19,8 +21,7 @@ public class FenceGenerator : MonoBehaviour
     /// </summary>
     [SerializeField]private float maxGap;
 
-    
-    public List<Fence> Fences { get; private set; } = new();
+
     
     /// <summary>
     /// The maximum amount of time it will take for another fence to spawn
@@ -37,7 +38,9 @@ public class FenceGenerator : MonoBehaviour
     /// </summary>
     [SerializeField]private float minHeight;
     
-   
+   private void Awake(){
+        pool = FindObjectOfType<FencePool>();
+    }
     /// <summary>
     /// Generates a fence with randomized gap and time between each generation
     /// </summary>
@@ -112,8 +115,8 @@ public class FenceGenerator : MonoBehaviour
     private void SpawnFence(float height, Vector2Int direction){
         
         Vector2 spawnPosition = DecideSpawnPosition(direction);   
-        Fence fence = Instantiate(this.fence, spawnPosition, Quaternion.identity);
+        Fence fence = pool.Get<Fence>();
+        fence.transform.position = spawnPosition;
         fence.Init(height, direction);
-        Fences.Add(fence);
     }
 }
