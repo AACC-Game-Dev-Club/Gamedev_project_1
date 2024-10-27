@@ -10,6 +10,12 @@ public class Fence : MonoBehaviour
    public void Init(float height, Vector2 direction){
         Height = height;
         Direction = direction;
+        InitVisuals();
+   }
+
+   private void InitVisuals(){
+      FenceVisualController visualController = new FenceVisualController();
+      visualController.Init(this);
    }
 
    

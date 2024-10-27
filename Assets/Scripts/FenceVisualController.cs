@@ -2,28 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FenceVisualController : MonoBehaviour
+public class FenceVisualController
 {
-    [SerializeField]private SpriteRenderer bodySprite;
     private SpriteRenderer fenceSprite;
 
     private Fence fence;
+    private FenceVisuals visuals;
 
-    private void Awake()
-    {
-        fence = GetComponent<Fence>();
-        fenceSprite = GetComponent<SpriteRenderer>();
-    }
-
-    private void Start()
-    { 
+  
+    
+    public void Init(Fence fence){
+        this.fence = fence;
+        fenceSprite = fence.GetComponent<SpriteRenderer>();
+        visuals = fence.GetComponent<FenceVisuals>();
+        
         SetUp();
     }
 
     private void SetUp(){
         // Set the scale of the fence's body based on its height and direction
-        Vector2 scale = new(bodySprite.transform.localScale.x, fence.Height * fence.Direction.y);
-        bodySprite.transform.localScale = scale;
+        Vector2 scale = new(visuals.fenceBody.transform.localScale.x, fence.Height * fence.Direction.y);
+        visuals.fenceBody.transform.localScale = scale;
 
         // Reposition the fence to start at its bottom edge
         fence.transform.position = new Vector2(fence.transform.position.x, fence.transform.position.y + scale.y / 2);
