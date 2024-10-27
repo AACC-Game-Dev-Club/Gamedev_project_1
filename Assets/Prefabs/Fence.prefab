@@ -127,8 +127,8 @@ GameObject:
   - component: {fileID: 1505216504855708061}
   - component: {fileID: 5954434933827875393}
   - component: {fileID: 733177674989434582}
-  - component: {fileID: 8514992814410078698}
-  - component: {fileID: 101427914717051183}
+  - component: {fileID: 6878992631442069772}
+  - component: {fileID: 8965319668637076582}
   m_Layer: 0
   m_Name: Fence
   m_TagString: Untagged
@@ -190,8 +190,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -115645843
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 912b949e40e8c4a17ab627287f373df2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f9238f8520214e70a54754f4ce8e7fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8514992814410078698
+--- !u!114 &6878992631442069772
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -225,11 +225,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5631382671588265980}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d122670ab49e4d6392a53c9b0300bde, type: 3}
+  m_Script: {fileID: 11500000, guid: 76995a53f151b4f5e93da2cb0a5d4583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.8
---- !u!114 &101427914717051183
+  speed: 4
+--- !u!114 &8965319668637076582
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -238,7 +238,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5631382671588265980}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 700a1eac8fd4c4a9ba7ba57a85a89959, type: 3}
+  m_Script: {fileID: 11500000, guid: 80e5678afd2134688a6ce3738f015b49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodySprite: {fileID: 54387387233578480}
+  fenceBody: {fileID: 54387387233578480}
