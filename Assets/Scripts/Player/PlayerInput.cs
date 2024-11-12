@@ -15,6 +15,9 @@ public class PlayerInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!GameManager.isPlaying){
+            return;
+        }
         if (Input.GetKeyDown(KeyCode.Space)) {
             //increase velocity y
             rb2d.velocity = new Vector3(0, jumpForce);

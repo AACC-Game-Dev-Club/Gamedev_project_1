@@ -7,30 +7,31 @@ public class FlappyAnimation
 {
     public Sprite[] sprites;
     public float frameRate = 0.05f;
-}
+} 
 
-public class PlayerVisualController : MonoBehaviour
+public class PlayerVisualController
 {
-    [SerializeField] private FlappyAnimation flappyAnimation;
     private SpriteRenderer spriteRenderer;
-    private bool isAnimating = true;
-    private int spriteCount;
+    private bool isAnimating;
+    private PlayerVisuals visuals; 
 
-    private void Awake()
+    private Player player;
+    public void Init(Player player)
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteCount = flappyAnimation.sprites.Length; // Cache the sprite array length
+        this.player = player;
+        spriteRenderer = player.GetComponent<SpriteRenderer>();
+        visuals = player.GetComponent<PlayerVisuals>();
+
     }
 
-    private void Start()
-    {
-        StartCoroutine(Animate());
-    }
+   
 
     private IEnumerator Animate()
     {
         int index = 0;
-        
+        FlappyAnimation flappyAnimation = visuals.flappyAnimation;
+        int spriteCount = flappyAnimation.sprites.Length; // Cache the sprite array length
+
         while (isAnimating)
         {
             // Cycle through sprites
@@ -49,10 +50,11 @@ public class PlayerVisualController : MonoBehaviour
 
     public void StartAnimation()
     {
-        if (!isAnimating)
-        {
-            isAnimating = true;
-            StartCoroutine(Animate());
+        if(isAnimating){
+            return;
         }
+        isAnimating = true;
+        player.StartCoroutine(Animate());
+        
     }
 }

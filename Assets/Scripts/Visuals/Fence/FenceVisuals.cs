@@ -6,4 +6,5 @@ public class FenceVisuals : MonoBehaviour
 {
 
     public SpriteRenderer fenceBody;
+    public Sprite fenceBodySprite;
 }
