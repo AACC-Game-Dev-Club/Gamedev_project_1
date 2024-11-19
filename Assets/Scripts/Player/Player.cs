@@ -51,6 +51,7 @@ public class Player : MonoBehaviour
     
    void FixedUpdate ()
     {
+        fencePassed();
         // Does the ray intersect any objects excluding the player layer
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, Mathf.Infinity);
         if(hit.collider != null)
@@ -60,7 +61,7 @@ public class Player : MonoBehaviour
 
         }
         
-        if (hit.collider != null && hit.collider.gameObject.CompareTag("Fence"))
+        if (hit.collider.gameObject.CompareTag("Fence")&&false)
         { 
             Debug.DrawRay(transform.position, Vector2.down * hit.distance, Color.green); 
             Debug.Log("Did Hit"); 
@@ -97,10 +98,18 @@ public class Player : MonoBehaviour
     private void Die() {
         OnFenceHit?.Invoke();
     }
-    
-    
 
-   
-
-     
+    private void fencePassed(){
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, Mathf.Infinity);
+        //fence detected
+        Boolean bool1 = (hit.collider.gameObject.CompareTag("Fence"));
+        if (bool1){
+            Boolean bool2 = !(hit.collider.gameObject.CompareTag("Fence"));
+            if (bool2){
+                bool1 = false;
+                score++;
+            }
+        }
+    }
+    
 }
