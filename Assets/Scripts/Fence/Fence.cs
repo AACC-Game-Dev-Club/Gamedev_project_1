@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -36,6 +37,7 @@ public class Fence :MonoBehaviour
       FenceVisualController visualController = new FenceVisualController();
       visualController.Init(this);
    }
+
 }
 
    

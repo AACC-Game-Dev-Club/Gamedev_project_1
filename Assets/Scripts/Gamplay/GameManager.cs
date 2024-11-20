@@ -1,48 +1,67 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using Unity.VisualScripting;
 public class GameManager : MonoBehaviour
 {
-    private UIManager uiManager;
+    private UIManager ui;
     public static Action onGameOver;
     private Player player;
     private FenceGenerator fenceGenerator;
     
     public static bool isPlaying;
     public static int score;
-
+    public static Action<int> OnScore;
     private void Awake(){
-        uiManager = FindObjectOfType<UIManager>();
+        ui = FindObjectOfType<UIManager>();
         player = FindObjectOfType<Player>();
         fenceGenerator = FindObjectOfType<FenceGenerator>();
     }
     
     private void Start(){
-        Player.OnFenceHit += OnGameOver;
+        Player.OnFenceHit += OnFenceHit;
         Player.OnGroundHit += OnGroundHit;
-        Player.OnFencePassed += ()=>{
-            score++;
-        };
+        Player.OnFencePassed += OnFencePassed;
 
     }
-
+    
+    
+    private void OnFenceHit(){
+        isPlaying = false;
+    }
+    
+    
     private void OnGroundHit()
     {
-       
+        isPlaying = false;
 
-        uiManager.PushScreen(ScreenType.GameOver);
-        OnGameOver();
-
+        ui.PushScreen(ScreenType.GameOver);
+        player.Disable();
     }
-
+   
+   
+   private void OnFencePassed(){
+        score++;
+    } 
+    
+    
     public void StartGame(){
         score = 0;
         isPlaying = true;
-        player.EnablePhysics();
+        player.Enable();
     }
+    
 
-    private void OnGameOver(){
-        isPlaying = false;
-        
+    
+
+   
+
+    private void Update(){
+       if(!isPlaying){
+           return;
+       }
+       fenceGenerator.GenerateFences();
     }
 
     

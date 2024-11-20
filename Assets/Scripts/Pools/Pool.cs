@@ -13,7 +13,7 @@ public abstract class Pool<T> : MonoBehaviour where T : MonoBehaviour
     public abstract T Prefab {get;}
     public abstract string Name {get;}
 
-    public readonly Queue<T> pool = new Queue<T>();
+    public readonly Queue<T> pool = new();
 
     private void Awake()
     {

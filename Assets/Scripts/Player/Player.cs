@@ -6,56 +6,89 @@ using UnityEngine;
 /// </summary>
 public class Player : MonoBehaviour
 {
-    public static Action OnFenceHit;
-    public static Action<int> OnScore;
-    public static Action OnGroundHit;
-
     private PlayerVisualController visualController;
     private Rigidbody2D rb2d;
 
-    public LayerMask fenceLayerMask; // Set this in the Inspector
-    private int score;
-    private bool hasPassedFence;
-    public static Action OnFencePassed;
+    [SerializeField]private LayerMask fenceLayerMask;
+    
+    public static event Action OnFenceHit;
+
+    public static event Action OnFencePassed;
+
+    public static event Action OnGroundHit;
+
+    private bool fencePassed = false;
+
 
     private void Awake() {
         rb2d = GetComponent<Rigidbody2D>();
-        hasPassedFence = false;
     }
 
     private void Start() {
-        InitVisuals();
-        DisablePhysics();
-    }
+        Init();
 
+    }
+     public void Init() {
+        transform.position = Vector3.zero;
+        InitVisuals();
+        Disable();
+
+
+
+    }
     private void InitVisuals() {
         visualController = new PlayerVisualController();
         visualController.Init(this);
         visualController.StartAnimation();
     }
-
-    public void Reset() {
-        score = 0;
-        hasPassedFence = false;
-        transform.position = Vector3.zero;
-        visualController.StartAnimation();
-        DisablePhysics();
-    }
-
-    public void EnablePhysics() {
+   
+    public void Enable() {
         rb2d.simulated = true;
+        visualController.StartAnimation();
+
+
     }
 
-    public void DisablePhysics() {
+    public void Disable() {
+        rb2d.velocity = Vector2.zero;
         rb2d.simulated = false;
+
     }
+    
+    
+   
 
     private void FixedUpdate() {
+        if(!GameManager.isPlaying){
+            return;
+        }
+
         CheckFencePassed();
     }
 
     private void CheckFencePassed() {
         // Raycast directly below the player
+
+        RaycastHit2D hit = Physics2D.Raycast(new Vector2(-0.5f, 0) , Vector2.down, Mathf.Infinity, fenceLayerMask);
+
+        
+        // Check if the raycast hit a fence
+        bool fenceFound = hit.collider != null && hit.collider.CompareTag("Fence");
+        
+        //If fence found below the player and we didnt score yet
+        if (fenceFound && !fencePassed) {
+            
+            //We scored!
+            fencePassed = true;
+            OnFencePassed?.Invoke();
+        } 
+        //If we didnt hit a fence, reset the didScore flag
+        if(!fenceFound){
+            
+            fencePassed = false;
+        }
+    }
+    
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, Mathf.Infinity, fenceLayerMask);
 
         if (hit.collider != null) {
@@ -75,17 +108,17 @@ public class Player : MonoBehaviour
         } 
     }
 
+
     private void OnTriggerEnter2D(Collider2D collider) {
-        if (collider.CompareTag("Fence")) {
+        if(collider.CompareTag("Fence")) {
             OnFenceHit?.Invoke();
             visualController.StopAnimation();
-        }
-    }
 
-    private void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.CompareTag("Ground")) {
+        }
+        if (collider.gameObject.CompareTag("Ground")) {
             OnGroundHit?.Invoke();
             visualController.StopAnimation();
+
         }
     }
 }
