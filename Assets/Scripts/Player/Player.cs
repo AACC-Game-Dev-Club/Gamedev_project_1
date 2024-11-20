@@ -2,22 +2,25 @@ using System;
 using UnityEngine;
 
 /// <summary>
-/// This class represents the player in the game
+/// This class represents the player in the game.
 /// </summary>
 public class Player : MonoBehaviour
 {
     public static Action OnFenceHit;
+    public static Action<int> OnScore;
+    public static Action OnGroundHit;
+
     private PlayerVisualController visualController;
     private Rigidbody2D rb2d;
-    private LayerMask layerMask;
-    internal static Action<int> OnScore;
-    private int score;
 
-    public static Action OnGroundHit { get; internal set; }
+    public LayerMask fenceLayerMask; // Set this in the Inspector
+    private int score;
+    private bool hasPassedFence;
+    public static Action OnFencePassed;
 
     private void Awake() {
         rb2d = GetComponent<Rigidbody2D>();
-        
+        hasPassedFence = false;
     }
 
     private void Start() {
@@ -29,17 +32,16 @@ public class Player : MonoBehaviour
         visualController = new PlayerVisualController();
         visualController.Init(this);
         visualController.StartAnimation();
-
     }
+
     public void Reset() {
         score = 0;
+        hasPassedFence = false;
         transform.position = Vector3.zero;
         visualController.StartAnimation();
         DisablePhysics();
-        rb2d.simulated = false;
-
-
     }
+
     public void EnablePhysics() {
         rb2d.simulated = true;
     }
@@ -47,69 +49,43 @@ public class Player : MonoBehaviour
     public void DisablePhysics() {
         rb2d.simulated = false;
     }
-    
-    
-   void FixedUpdate ()
-    {
-        fencePassed();
-        // Does the ray intersect any objects excluding the player layer
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, Mathf.Infinity);
-        if(hit.collider != null)
-        {
-            Debug.Log(hit.collider.gameObject.name);
-            Debug.Log(hit.collider.gameObject.tag);
 
-        }
-        
-        if (hit.collider.gameObject.CompareTag("Fence")&&false)
-        { 
-            Debug.DrawRay(transform.position, Vector2.down * hit.distance, Color.green); 
-            Debug.Log("Did Hit"); 
-            score++;
-            OnScore?.Invoke(score);
-
-
-        }
-        else
-        { 
-            Debug.DrawRay(transform.position, Vector2.down * 1000, Color.red); 
-            Debug.Log("Did not Hit"); 
-        }
-        
+    private void FixedUpdate() {
+        CheckFencePassed();
     }
-   
+
+    private void CheckFencePassed() {
+        // Raycast directly below the player
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, Mathf.Infinity, fenceLayerMask);
+
+        if (hit.collider != null) {
+            Debug.Log($"Hit Object: {hit.collider.gameObject.name}, Tag: {hit.collider.gameObject.tag}");
+            Debug.DrawRay(transform.position, Vector2.down * hit.distance, Color.green);
+        } else {
+            Debug.Log("No object detected.");
+            Debug.DrawRay(transform.position, Vector2.down * 5f, Color.red);
+        }
+
+        bool didScore = false;
+        bool fenceFound = hit.collider != null && hit.collider.CompareTag("Fence");
+        //If fence found and we didnt score yet
+        if (fenceFound && !didScore) {
+            didScore = true;
+            OnFencePassed?.Invoke();
+        } 
+    }
 
     private void OnTriggerEnter2D(Collider2D collider) {
-        if(collider.CompareTag("Fence")) {
+        if (collider.CompareTag("Fence")) {
             OnFenceHit?.Invoke();
             visualController.StopAnimation();
-
         }
     }
+
     private void OnCollisionEnter2D(Collision2D collision) {
-        if(collision.gameObject.CompareTag("Ground")) {
+        if (collision.gameObject.CompareTag("Ground")) {
             OnGroundHit?.Invoke();
             visualController.StopAnimation();
-
         }
     }
-    
-   
-    private void Die() {
-        OnFenceHit?.Invoke();
-    }
-
-    private void fencePassed(){
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, Mathf.Infinity);
-        //fence detected
-        Boolean bool1 = (hit.collider.gameObject.CompareTag("Fence"));
-        if (bool1){
-            Boolean bool2 = !(hit.collider.gameObject.CompareTag("Fence"));
-            if (bool2){
-                bool1 = false;
-                score++;
-            }
-        }
-    }
-    
 }

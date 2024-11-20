@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
     private void Start(){
         Player.OnFenceHit += OnGameOver;
         Player.OnGroundHit += OnGroundHit;
+        Player.OnFencePassed += ()=>{
+            score++;
+        };
 
     }
 
