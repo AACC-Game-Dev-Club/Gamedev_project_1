@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -14,7 +15,7 @@ public class FenceScroller : MonoBehaviour
     /// <summary>
     /// Event triggered when the fence should be disabled because it has left the screen.
     /// </summary>
-    public static event System.Action<Fence> OnFenceShouldBeDisabled;
+    public static event Action<Fence> OnFenceOutOfView;
 
     private Fence fence;
 
@@ -30,14 +31,14 @@ public class FenceScroller : MonoBehaviour
         if(!GameManager.isPlaying){
             return;
         }
-        /* Moves the fence to the left and checks if it has moved out of the camera's view.
-         * If the fence has moved out of view, triggers the OnFenceShouldBeDestroyed event.
-         */ 
+        //Moves the fence to the left and checks if it has moved out of the camera's view.
+        //If the fence has moved out of view, triggers the OnFenceShouldBeDestroyed event.
+         
         float cameraLeftEdge = Camera.main.ViewportToWorldPoint(new Vector3(0, 0.5f, Camera.main.nearClipPlane)).x;
         transform.Translate(speed * Time.deltaTime * Vector2.left);
         if (transform.position.x + transform.localScale.x < cameraLeftEdge)
         {
-            OnFenceShouldBeDisabled?.Invoke(fence);
+            OnFenceOutOfView?.Invoke(fence);
         }
     }
 }

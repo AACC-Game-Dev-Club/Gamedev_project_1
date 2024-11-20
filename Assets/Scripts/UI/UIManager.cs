@@ -15,9 +15,9 @@ public class UIManager : MonoBehaviour
 {
    
     private Screen currentScreen;
-    private Stack<Screen> screens = new Stack<Screen>(); 
+    private readonly Stack<Screen> screens = new(); 
 
-    [SerializeField]private Screen initialScreen;
+    [SerializeField]private readonly Screen initialScreen;
     
     private void Start(){
         if(initialScreen != null){

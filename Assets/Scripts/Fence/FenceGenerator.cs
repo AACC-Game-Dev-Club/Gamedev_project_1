@@ -40,7 +40,7 @@ public class FenceGenerator : MonoBehaviour
 
     private void Start()
     {
-        FenceScroller.OnFenceShouldBeDisabled += OnFenceShouldBeDestroyed;
+        FenceScroller.OnFenceOutOfView += OnFenceOutOfView;
     }
     /// <summary>
     /// Generates two fences with randomized vertical and horizontal gap between each generation
@@ -64,11 +64,8 @@ public class FenceGenerator : MonoBehaviour
 
     }
 
-    private void Update()
-    {
-        if(!GameManager.isPlaying){
-            return;
-        }
+    public void GenerateFences()
+    {    
         // If there are no fences, generate a new fence
         if(currentFence == null){
             GenerateFence();    
@@ -76,15 +73,10 @@ public class FenceGenerator : MonoBehaviour
         // If the current fence has passed the generator, generate a new fence
         else if(currentFence.transform.position.x <= transform.position.x){
           GenerateFence();
-        }
-
-        
-            
-
-        
+        }        
     }
 
-    private void OnFenceShouldBeDestroyed(Fence fence){
+    private void OnFenceOutOfView(Fence fence){
         fences.Remove(fence);
         pool.Return(fence);
     }
