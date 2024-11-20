@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
         Player.OnFenceHit += OnFenceHit;
         Player.OnGroundHit += OnGroundHit;
         Player.OnFencePassed += OnFencePassed;
+
     }
     
     

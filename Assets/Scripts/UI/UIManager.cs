@@ -49,9 +49,6 @@ public class UIManager : MonoBehaviour
         screenToPush.Enter();
     }
 
-   
-
-
     /// <summary>
     /// Pops a screen from the stack and deactivates it given the screen type
     /// </summary>
@@ -65,9 +62,6 @@ public class UIManager : MonoBehaviour
 
         screen.Enter();
     }
-
-   
-
 
     /// <summary>
     /// Pops a screen from the stack and deactivates it
